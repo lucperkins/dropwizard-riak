@@ -51,4 +51,16 @@ public class RiakResourceDriver<T> {
             throw new WebApplicationException(Response.Status.BAD_REQUEST);
         }
     }
+
+    public Response delete(Location loc) {
+        try {
+            if (riak.delete(loc)) {
+                return Response.status(202).build();
+            } else {
+                throw new WebApplicationException(Response.Status.BAD_REQUEST);
+            }
+        } catch (RiakException e) {
+            throw new WebApplicationException(Response.Status.BAD_REQUEST);
+        }
+    }
 }
