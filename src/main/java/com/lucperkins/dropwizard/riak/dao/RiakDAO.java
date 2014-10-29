@@ -23,6 +23,10 @@ public class RiakDAO<T> {
         this.client = client;
     }
 
+    public T fetch(Location loc) throws RiakException {
+        return fetchByLocation(loc);
+    }
+
     public T fetch(String bucket, String key) throws RiakException {
         Location loc = makeLocation(bucket, key);
         return fetchByLocation(loc);
@@ -31,6 +35,18 @@ public class RiakDAO<T> {
     public T fetch(String bucket, String key, String bucketType) throws RiakException {
         Location loc = makeLocation(bucket, key, bucketType);
         return fetchByLocation(loc);
+    }
+
+    public boolean store(RiakableObject obj) throws RiakException {
+        Location loc = obj.getLocation();
+        StoreValue.Builder storeOp = new StoreValue.Builder(obj)
+                .withOption(StoreValue.Option.RETURN_BODY, true);
+        try {
+            client.execute(storeOp.build());
+            return found(loc);
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RiakException(e);
+        }
     }
 
     public boolean store(T t, String bucket, String key) throws RiakException {
@@ -56,6 +72,20 @@ public class RiakDAO<T> {
         } catch (ExecutionException | InterruptedException e) {
             throw new RiakException(e);
         }
+    }
+
+    public boolean update(Location loc, UpdateValue.Update update) throws RiakException {
+        UpdateValue.Builder updateOp = new UpdateValue.Builder(loc)
+                .withFetchOption(FetchValue.Option.DELETED_VCLOCK, true)
+                .withUpdate(update);
+
+        try {
+            UpdateValue.Response res = client.execute(updateOp.build());
+            return res.wasUpdated();
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RiakException(e);
+        }
+
     }
 
     public boolean update(T t, String bucket, String key) throws RiakException {
@@ -95,6 +125,27 @@ public class RiakDAO<T> {
         try {
             UpdateValue.Response res = client.execute(updateOp.build());
             return res.wasUpdated();
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RiakException(e);
+        }
+    }
+
+    public boolean delete(Location loc) throws RiakException {
+        DeleteValue.Builder deleteOp = new DeleteValue.Builder(loc);
+        try {
+            client.execute(deleteOp.build());
+            return found(loc);
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RiakException(e);
+        }
+    }
+
+    public boolean delete(RiakableObject obj) throws RiakException {
+        Location loc = obj.getLocation();
+        DeleteValue.Builder deleteOp = new DeleteValue.Builder(loc);
+        try {
+            client.execute(deleteOp.build());
+            return found(loc);
         } catch (ExecutionException | InterruptedException e) {
             throw new RiakException(e);
         }
@@ -145,7 +196,7 @@ public class RiakDAO<T> {
         }
     }
 
-    public boolean found(Location loc) throws RiakException {
+    private boolean found(Location loc) throws RiakException {
         FetchValue.Builder fetchOp = new FetchValue.Builder(loc);
         try {
             FetchValue.Response res = client.execute(fetchOp.build());

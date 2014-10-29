@@ -38,5 +38,9 @@ public abstract class RiakableObject {
     public String getBucketType() { return bucketType; }
 
     @RiakVClock
-    private VClock vClock;
+    VClock vClock;
+
+    public void setKey(String key) { this.key = key; }
+    public void setBucket(String bucket) { this.bucket = bucket; }
+    public void setBucketType(String bucketType) { this.bucketType = bucketType; }
 }

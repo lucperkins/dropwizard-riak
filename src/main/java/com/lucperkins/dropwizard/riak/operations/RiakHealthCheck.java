@@ -1,4 +1,4 @@
-package com.lucperkins.dropwizard.riak;
+package com.lucperkins.dropwizard.riak.operations;
 
 import com.basho.riak.client.core.RiakCluster;
 import com.basho.riak.client.core.operations.PingOperation;
