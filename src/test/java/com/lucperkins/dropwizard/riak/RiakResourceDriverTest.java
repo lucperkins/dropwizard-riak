@@ -73,7 +73,6 @@ public class RiakResourceDriverTest {
     @Test(expected = WebApplicationException.class)
     public void testFailedGet() throws RiakException {
         Person fetchedPerson = driver.get(luc.getLocation());
-
     }
 
     @After
