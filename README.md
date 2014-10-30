@@ -170,6 +170,54 @@ public class PersonResource {
 }
 ```
 
+## Health Checker
+
+The `RiakHealthCheck` extends Dropwizard's `HealthCheck` class. This
+utility periodically pings Riak to check for a response. When
+instantiating a Riak health checker, you can either pass in just a
+`RiakCluster` object:
+
+```java
+RiakHealthCheck riakHealthCheck = new RiakHealthCheck(cluster);
+```
+
+Or you can pass in two messages, one for when Riak is healthy and one
+for when it isn't:
+
+```java
+RiakHealthCheck riakHealthCheck = new RiakHealthCheck(cluster, "Everything is peachy", "Oh shit!");
+```
+
+If you don't pass in messages, the defaults are `Riak is healthy` and
+`Riak is down`.
+
 ## Setting Up the Plugin
 
+You should set up the various elements of the Riak plugin in your main
+`run` function. Here's an example setup:
 
+```java
+import io.dropwizard.Application;
+
+public class BadassApplication extends Application<MyConfiguration> {
+    @Override
+    public void run(MyConfiguration config, Environment env) throws Exception {
+        // Connection info for a 3-node cluster running on localhost
+        List<HostAndPort> riakConnectionInfo = new LinkedList<>();
+        riakConnectionInfo.add(new HostAndPort("127.0.0.1", 10017));
+        riakConnectionInfo.add(new HostAndPort("127.0.0.1", 10027));
+        riakConnectionInfo.add(new HostAndPort("127.0.0.1", 10037));
+
+        // Build some Riak-related stuff
+        RiakCluster cluster = RiakClusterManager.buildCluster(riakConnectionInfo);
+        RiakClusterManager manager = new RiakClusterManager(cluster);
+        RiakClient client = new RiakClient(cluster);
+
+        // Register the cluster manager with Dropwizard
+        env.lifecycle().manage(riakClusterManager);
+
+        // Register the health checker
+        env.healthChecks().register("riak", new RiakHealthCheck(riakCluster, "YEY!", "WOMP WOMP"));
+    }
+}
+```

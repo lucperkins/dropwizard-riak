@@ -18,6 +18,12 @@ public class RiakHealthCheck extends HealthCheck {
         this.unhealthyMessage = unhealthyMessage;
     }
 
+    public RiakHealthCheck(RiakCluster cluster) {
+        this.cluster = cluster;
+        this.healthyMessage = "Riak is healthy";
+        this.unhealthyMessage = "Riak is down";
+    }
+
     @Override
     protected Result check() throws Exception {
         try {
