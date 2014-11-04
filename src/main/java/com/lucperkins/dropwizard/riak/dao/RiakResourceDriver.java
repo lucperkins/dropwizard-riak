@@ -42,6 +42,13 @@ public class RiakResourceDriver<T> {
     public Response post(RiakableObject obj, String uriString) {
         URI uri = URI.create(uriString);
         try {
+            if (riak.found(obj.getLocation())) {
+                return Response
+                        .status(409)
+                        .entity("Object already exists")
+                        .build();
+            }
+
             if (riak.store(obj)) {
                 return Response.created(uri).build();
             } else {

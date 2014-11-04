@@ -75,6 +75,13 @@ public class RiakResourceDriverTest {
         Person fetchedPerson = driver.get(luc.getLocation());
     }
 
+    @Test
+    public void testFailedPost() throws RiakException {
+        driver.post(luc, luc.getKey());
+        Response res = driver.post(luc, luc.getKey());
+        assertEquals(res.getStatus(), 409);
+    }
+
     @After
     public void tearDown() throws RiakException {
         riak.delete(luc);

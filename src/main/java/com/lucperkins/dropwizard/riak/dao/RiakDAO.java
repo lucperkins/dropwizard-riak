@@ -196,7 +196,7 @@ public class RiakDAO<T> {
         }
     }
 
-    private boolean found(Location loc) throws RiakException {
+    public boolean found(Location loc) throws RiakException {
         FetchValue.Builder fetchOp = new FetchValue.Builder(loc);
         try {
             FetchValue.Response res = client.execute(fetchOp.build());
