@@ -6,7 +6,6 @@ import com.lucperkins.dropwizard.riak.dao.RiakResourceDriver;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.HashSet;
-import java.util.LinkedList;
 
 @Path("/{people}")
 public class PersonResource {

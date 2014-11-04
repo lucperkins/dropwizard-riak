@@ -2,12 +2,8 @@ package com.lucperkins.dropwizard.riak;
 
 import com.basho.riak.client.api.RiakClient;
 import com.basho.riak.client.api.RiakException;
-import com.basho.riak.client.api.cap.ConflictResolver;
-import com.basho.riak.client.api.cap.ConflictResolverFactory;
-import com.basho.riak.client.api.commands.kv.UpdateValue;
 import com.basho.riak.client.core.RiakCluster;
 import com.lucperkins.dropwizard.riak.dao.RiakDAO;
-import com.lucperkins.dropwizard.riak.dao.RiakableObject;
 import com.lucperkins.dropwizard.riak.operations.HostAndPort;
 import com.lucperkins.dropwizard.riak.operations.RiakClusterManager;
 import org.junit.After;
@@ -17,14 +13,17 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.net.UnknownHostException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
 public class RiakDAOTest {
+    private RiakDAO<Person> riak;
     private Person luc;
     private Person cindy;
-    private RiakDAO<Person> riak;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
