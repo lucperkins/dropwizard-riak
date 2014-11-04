@@ -82,6 +82,12 @@ public class RiakResourceDriverTest {
         assertEquals(res.getStatus(), 409);
     }
 
+    @Test
+    public void testPut() throws RiakException {
+        Response res = driver.put(luc.getLocation(), new Person.AgeByOneYear());
+        assertEquals(res.getStatus(), 204);
+    }
+
     @After
     public void tearDown() throws RiakException {
         riak.delete(luc);

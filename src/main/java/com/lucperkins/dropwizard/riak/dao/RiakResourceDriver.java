@@ -2,6 +2,7 @@ package com.lucperkins.dropwizard.riak.dao;
 
 import com.basho.riak.client.api.RiakClient;
 import com.basho.riak.client.api.RiakException;
+import com.basho.riak.client.api.commands.kv.UpdateValue;
 import com.basho.riak.client.core.query.Location;
 
 import javax.ws.rs.WebApplicationException;
@@ -51,6 +52,18 @@ public class RiakResourceDriver<T> {
 
             if (riak.store(obj)) {
                 return Response.created(uri).build();
+            } else {
+                throw new WebApplicationException(Response.Status.BAD_REQUEST);
+            }
+        } catch (RiakException e) {
+            throw new WebApplicationException(Response.Status.BAD_REQUEST);
+        }
+    }
+
+    public Response put(Location loc, UpdateValue.Update update) {
+        try {
+            if (riak.update(loc, update)) {
+                return Response.status(204).entity("Object successfully updated").build();
             } else {
                 throw new WebApplicationException(Response.Status.BAD_REQUEST);
             }

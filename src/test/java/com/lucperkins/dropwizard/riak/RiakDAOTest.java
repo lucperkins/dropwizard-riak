@@ -69,6 +69,13 @@ public class RiakDAOTest {
     }
 
     @Test
+    public void testFailedGet() throws RiakException {
+        thrown.expect(RiakException.class);
+        thrown.expectMessage("Object is null");
+        Person fetchedPerson = riak.fetch("whatevs", "whatevs");
+    }
+
+    @Test
     public void testDelete() throws RiakException {
         riak.delete(luc);
 
