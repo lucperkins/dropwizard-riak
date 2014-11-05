@@ -221,3 +221,10 @@ public class BadassApplication extends Application<MyConfiguration> {
     }
 }
 ```
+
+## TODOs
+
+* The `ResourceDriver` isn't yet fully RESTful. Do not use it.
+* Test coverage is decent but could use some work
+* At some point, I'd like to create an abstract resource factory that
+  enables you to more easily create Jersey resources
