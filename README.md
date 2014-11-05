@@ -110,7 +110,14 @@ public class Person extends RiakableObject {
     // Jackson JSON constructor
     public Person() {}
 
-    // Include setters and getters for "name" and "age"
+    public void setName(String name) { this.name = name; }
+    public void setAge(int age) { this.age = age; }
+
+    @JsonProperty
+    public String getName() { return name; }
+
+    @JsonProperty
+    public int getAge() { return age; }
 }
 ```
 
