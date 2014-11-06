@@ -72,7 +72,53 @@ public class RiakResourceDriver<T> {
         }
     }
 
-    public Response delete(Location loc) {
+    public Response delete(String bucket, String key) {
+        Location loc = RiakDAO.makeLocation(bucket, key);
+        try {
+            if (riak.delete(loc)) {
+                return Response
+                        .status(200)
+                        .entity("Object has been successfully deleted")
+                        .build();
+            } else {
+                throw new WebApplicationException(Response.Status.BAD_REQUEST);
+            }
+        } catch (RiakException e) {
+            throw new WebApplicationException(Response.Status.BAD_REQUEST);
+        }
+    }
+
+    public Response delete(String bucket, String key, String bucketType) {
+        Location loc = RiakDAO.makeLocation(bucket, key, bucketType);
+        try {
+            if (riak.delete(loc)) {
+                return Response
+                        .status(200)
+                        .entity("Object has been successfully deleted")
+                        .build();
+            } else {
+                throw new WebApplicationException(Response.Status.BAD_REQUEST);
+            }
+        } catch (RiakException e) {
+            throw new WebApplicationException(Response.Status.BAD_REQUEST);
+        }
+    }
+
+    public Response scheduledDelete(String bucket, String key) {
+        Location loc = RiakDAO.makeLocation(bucket, key);
+        try {
+            if (riak.delete(loc)) {
+                return Response.status(202).build();
+            } else {
+                throw new WebApplicationException(Response.Status.BAD_REQUEST);
+            }
+        } catch (RiakException e) {
+            throw new WebApplicationException(Response.Status.BAD_REQUEST);
+        }
+    }
+
+    public Response scheduledDelete(String bucket, String key, String bucketType) {
+        Location loc = RiakDAO.makeLocation(bucket, key, bucketType);
         try {
             if (riak.delete(loc)) {
                 return Response.status(202).build();

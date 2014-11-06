@@ -173,11 +173,11 @@ public class RiakDAO<T> {
         }
     }
 
-    private static Location makeLocation(String bucket, String key) {
+    public static Location makeLocation(String bucket, String key) {
         return new Location(new Namespace(bucket), key);
     }
 
-    private static Location makeLocation(String bucket, String key, String bucketType) {
+    public static Location makeLocation(String bucket, String key, String bucketType) {
         return new Location(new Namespace(bucketType, bucket), key);
     }
 
