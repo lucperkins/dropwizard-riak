@@ -63,7 +63,7 @@ public class RiakResourceDriver<T> {
     public Response put(Location loc, UpdateValue.Update update) {
         try {
             if (riak.update(loc, update)) {
-                return Response.status(204).entity("Object successfully updated").build();
+                return Response.status(204).build();
             } else {
                 throw new WebApplicationException(Response.Status.BAD_REQUEST);
             }
