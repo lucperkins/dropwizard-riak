@@ -135,10 +135,11 @@ boolean stored = riak.store(post);
 ## Riak Resource Driver
 
 The real meat of this library is that it enables you to easily get your
-Dropwizard resources interacting with Riak. The `RiakResourceDriver`
-class enables you to easily transform HTTP requests into Riak
-interactions and then back into HTTP responses. Below is an example
-resource that does that:
+Dropwizard resources interacting with Riak. You should see it as a means
+of essentially turning Dropwizard into an HTTP broker between clients
+and Riak. The `RiakResourceDriver` class enables you to easily transform
+HTTP requests into Riak interactions and then back into HTTP responses.
+Below is an example resource that does that:
 
 ```java
 @Path("/people")
@@ -235,3 +236,4 @@ public class BadassApplication extends Application<MyConfiguration> {
 * Test coverage is decent but could use some work
 * At some point, I'd like to create an abstract resource factory that
   enables you to more easily create Jersey resources
+* Security (!)
